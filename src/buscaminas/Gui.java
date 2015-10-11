@@ -19,14 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Leo
  */
 public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
-    
 
-  
-
-
-    /**
-     * Creates new form Gui
-     */
     Game game;
     private int modo = Game.BASICO;
     JToggleButton botones[][] = new JToggleButton['h']['h'];
@@ -45,34 +38,10 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
     public void initializeGame(int modo) {
 
         game = new Game(modo);
-        cron.pararCronometro();
-        numClick =0;
-        marcados = Game.NUM_BOMBAS;
-        jPanel2.removeAll();
-        jPanel2.setLayout(new java.awt.GridLayout(Game.NUM_COLUMNAS, Game.NUM_FILAS));
-        jLabelBombas.setText("Minas : "+Game.NUM_BOMBAS);
-        jLabelTiempo.setText("00:00:00");
-        jLabelBombas.setText("Minas : "+Game.NUM_BOMBAS);
-        for (int i = 0; i < Game.NUM_FILAS; i++) {
-            for (int j = 0; j < Game.NUM_COLUMNAS; j++) {
-                JToggleButton b = new JToggleButton("");
-                b.setPreferredSize(new Dimension(10, 20));
-                b.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png")));
-                botones[i][j] = b;
-                MatrixButtonListener lis = new MatrixButtonListener(i,j,this);
-                b.addActionListener(lis);
-                b.addMouseListener(new MatrixButtonListener(i,j,this));
-                jPanel2.add(b);
-
-            }
-        }
-                pack();
-        jPanel1.revalidate();
-
-        setLocationRelativeTo(null);
+        personalizarJuego(Game.NUM_FILAS,Game.NUM_COLUMNAS,Game.NUM_BOMBAS);
     }
     
-        public void personalizarJuego(int filas, int columnas,int bombas) {
+    public void personalizarJuego(int filas, int columnas,int bombas) {
 
   
         game = new Game(filas,columnas,bombas);
