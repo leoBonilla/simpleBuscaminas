@@ -5,11 +5,13 @@
  */
 package buscaminas;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Leo
  */
-public class Casillero {
+public class Casillero extends JLabel{
     private boolean estaMinado;
     private int minasAlrededor;
 

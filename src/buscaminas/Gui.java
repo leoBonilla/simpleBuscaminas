@@ -5,15 +5,12 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Leo
@@ -23,6 +20,7 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
     Game game;
     private int modo = Game.BASICO;
     JToggleButton botones[][] = new JToggleButton['h']['h'];
+    Casillero casilleros[][] = new Casillero['h']['h'];
     private int numClick = 0;
     Cronometro cron = new Cronometro(this);
     int marcados;
@@ -55,15 +53,16 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
         jLabelBombas.setText("Minas : "+Game.NUM_BOMBAS);
         for (int i = 0; i < Game.NUM_FILAS; i++) {
             for (int j = 0; j < Game.NUM_COLUMNAS; j++) {
+           
                 JToggleButton b = new JToggleButton("");
-                b.setPreferredSize(new Dimension(10, 20));
+                b.setMinimumSize(new Dimension(43,19));
+                b.setMaximumSize(new Dimension(43,19));
                 b.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png")));
                 botones[i][j] = b;
                 MatrixButtonListener lis = new MatrixButtonListener(i,j,this);
                 b.addActionListener(lis);
                 b.addMouseListener(new MatrixButtonListener(i,j,this));
-                jPanel2.add(b);
-
+                jPanel2.add(b); 
             }
         }
                 pack();
@@ -177,7 +176,10 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Buscaminas");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage(Toolkit.getDefaultToolkit().getImage(Gui.class.getResource("/images/icono.png")));
+        setMaximumSize(new java.awt.Dimension(10000, 10000));
+        setResizable(false);
 
         jPanel1.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -185,11 +187,23 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
             }
         });
 
+        jLabelBombas.setBackground(new java.awt.Color(0, 0, 0));
         jLabelBombas.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
+        jLabelBombas.setForeground(new java.awt.Color(153, 255, 0));
         jLabelBombas.setText("10");
+        jLabelBombas.setToolTipText("Minas marcadas");
+        jLabelBombas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 2, true));
+        jLabelBombas.setInheritsPopupMenu(false);
+        jLabelBombas.setOpaque(true);
 
+        jLabelTiempo.setBackground(new java.awt.Color(0, 0, 0));
         jLabelTiempo.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
+        jLabelTiempo.setForeground(new java.awt.Color(153, 255, 0));
+        jLabelTiempo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelTiempo.setText("00:00");
+        jLabelTiempo.setToolTipText("Tiempo de juego");
+        jLabelTiempo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 0, 0), 2, true));
+        jLabelTiempo.setOpaque(true);
         jLabelTiempo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jLabelTiempo.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
             public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
@@ -203,9 +217,9 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelBombas, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelBombas, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -218,6 +232,7 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(344, 600));
         jPanel2.setLayout(new java.awt.GridLayout(8, 8));
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pin.png"))); // NOI18N
@@ -492,7 +507,7 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
         );
 
         pack();
@@ -503,6 +518,7 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
         NewDialog dialog = new NewDialog(this,true);
         Values values = dialog.showDialog();
         if(values != null){
+            
             personalizarJuego(values.getRows(),values.getColumns(),values.getBombs());
         }else{
            // System.out.println("Cancelado por usuario");

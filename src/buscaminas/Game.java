@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Leo
  */
-public class Game {
+public final class Game {
 
     public static final int BASICO = 8;
     public static final int NORMAL = 16;
@@ -20,7 +20,6 @@ public class Game {
     public static final boolean ES_BOMBA = true;
     public static int NUM_FILAS = 0;
     public static int NUM_COLUMNAS = 0;
-    private int modo;
     public static int NUM_BOMBAS;
     private static Casillero matriz[][] = new Casillero['h']['h'];
 
@@ -163,10 +162,6 @@ public class Game {
         }
     }
 
-//     private int getRandomInt(int min,int max){
-//         Random rdm = new Random();
-//         return rdm.nextInt(max-min + 1) + min;
-//     }
     private boolean getRandomBoolean() {
         int min = 1;
         int max = 8;
