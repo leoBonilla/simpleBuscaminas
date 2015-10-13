@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
@@ -19,32 +20,55 @@ import javax.swing.SwingUtilities;
  */
 public class MatrixButtonListener implements ActionListener ,MouseListener {
 
-        private final int i;
-        private final int j;
         private Jugable listener;
         private boolean marcado;
-        MatrixButtonListener(int i, int j,Jugable listener) {
-            this.i = i;
-            this.j = j;
-            this.listener = listener;
-            
+        
+        MatrixButtonListener(Jugable listener) {
+            this.listener = listener;  
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            Casillero casillero = Game.getCasilla(i, j);
-            JToggleButton boton = (JToggleButton) e.getSource();
+            Casillero casillero = (Casillero) e.getSource();
+            JToggleButton miBoton = (JToggleButton) e.getSource();
             listener.onClick();
             if (casillero.getEstaMinado()) {
                 listener.onPerder();
-            } else {
-                boton.setIcon(null);
-                boton.setText("" + casillero.getMinasAlrededor());
-                boton.setForeground(Color.BLUE);
-                boton.setEnabled(false);
+            } else{
+                  System.out.println("TE SALVASTE");
+                    if (((Casillero)miBoton).getMinasAlrededor()>0)
+                    miBoton.setText(((Casillero)miBoton).getMinasAlrededor()+"");
+                    ArrayList<Casillero> listaDeCasillasAMirar = new ArrayList();
+                    //añado el botón que ha sido pulsado
+                    listaDeCasillasAMirar.add((Casillero) miBoton);
+
+                    while (listaDeCasillasAMirar.size() > 0) {
+                        Casillero b = listaDeCasillasAMirar.get(0);
+                        for (int k = -1; k < 2; k++) {
+                            for (int m = -1; m < 2; m++) {
+                                if ((b.getI() + k >= 0) && (b.getJ() + m >= 0)&& (b.getI() + k < Game.NUM_FILAS) && (b.getJ() + m < Game.NUM_COLUMNAS)) {
+                                //si el boton de esa posición está habilitado 
+                                    //es que no lo he chequeado todavia
+                                   if (((JToggleButton)Game.getCasilla((b.getI()+ k),(b.getJ() + m ))).isEnabled()) {
+                                       if((Game.getCasilla((b.getI()+ k),(b.getJ() + m ))).getMinasAlrededor() == 0){
+                                            Game.getCasilla((b.getI()+ k),(b.getJ() + m )).setEnabled(false);
+                                            listaDeCasillasAMirar.add(Game.getCasilla((b.getI()+ k),(b.getJ() + m )));
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                        listaDeCasillasAMirar.remove(b);
+                    }
+
+                }
+                //si no, verificamos la casilla 
+                miBoton.setFocusPainted(false);
+                    
             }
-        }
+            
+
 
     @Override
     public void mouseClicked(MouseEvent e) {

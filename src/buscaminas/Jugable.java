@@ -11,8 +11,6 @@ package buscaminas;
  */
 public interface Jugable {
     void onPerder();
-    void onAcertarMina();
-    void onMinaVacia();
     void onClick();
     void onMarcarMina();
     void onDesmarcarMina();

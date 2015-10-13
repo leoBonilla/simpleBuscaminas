@@ -64,8 +64,9 @@ public final class Game {
         Casillero casillero;
         for (int i = 0; i < NUM_FILAS; i++) {
             for (int j = 0; j < NUM_COLUMNAS; j++) {
-                casillero = new Casillero();
+                casillero = new Casillero(i,j);
                 casillero.setEstaMinado(false);
+                casillero.setText("");
                 matriz[i][j] = casillero;
             }
 
@@ -89,77 +90,34 @@ public final class Game {
         } while (!bombasCompletas);
     }
 
-    void minasAlrededor() {
+    private void minasAlrededor(){
+         int minas = 0;
+
         for (int i = 0; i < NUM_FILAS; i++) {
             for (int j = 0; j < NUM_COLUMNAS; j++) {
-                if (matriz[i][j].getEstaMinado() == false) {
-                    if (i == 0 || i == NUM_FILAS - 1) {
-                        if (i == 0) {
-                            if (j == 0 || j == NUM_COLUMNAS - 1) {
-                                if (j == 0) {
-                                    matriz[i][j].setMinasAlrededor(minasEn(i, j + 1) + minasEn(i + 1, j) + minasEn(i + 1, j + 1));
-                                }
-                                if (j == NUM_COLUMNAS - 1) {
-                                    matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i + 1, j - 1) + minasEn(i + 1, j));
-                                }
-                            }else{
-                                matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i , j + 1) + minasEn(i+1, j-1) + minasEn(i+1, j+1)+ minasEn(i+1, j));
-                            }
-                        } else {
-                            if (i == NUM_FILAS - 1) {
-                                if (j == 0 || j == NUM_COLUMNAS - 1) {
-                                    if (j == 0) {
-                                        matriz[i][j].setMinasAlrededor(minasEn(i, j + 1) + minasEn(i - 1, j) + minasEn(i - 1, j + 1));
-                                    }
-                                    if (j == NUM_COLUMNAS - 1) {
-                                        matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i - 1, j - 1) + minasEn(i - 1, j));
-                                    }
-
-                                }else{
-                                       matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i , j + 1) + minasEn(i-1, j-1) + minasEn(i-1, j+1)+ minasEn(i-1, j));
-                            }
+                for (int k = -1; k < 2; k++) {
+                    for (int m = -1; m < 2; m++) {
+                        if ((i + k >= 0) && (j + m >= 0) && (i + k < NUM_FILAS) && (j + m < NUM_COLUMNAS)) {
+                            if(getCasilla(i+k,j+m).getEstaMinado()){
+                             minas++;
                             }
                         }
-
-                    }     else{
-                    
-                        if(j==0 || j== NUM_COLUMNAS -1){
-                          if(j == 0){
-                          matriz[i][j].setMinasAlrededor(minasEn(i, j + 1) + minasEn(i - 1, j) + minasEn(i - 1, j + 1) + minasEn(i + 1, j)+ minasEn(i + 1, j + 1));
-                             
-                          }else{
-                          matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i - 1, j) + minasEn(i - 1, j - 1) + minasEn(i + 1, j)+ minasEn(i + 1, j - 1));
-                          }
-                        }else{
-                           matriz[i][j].setMinasAlrededor(minasEn(i, j - 1) + minasEn(i - 1, j) + minasEn(i - 1, j - 1) + minasEn(i + 1, j) + minasEn(i + 1, j-1)+ minasEn(i -1 , j + 1) + minasEn(i , j + 1) + minasEn(i +1 , j + 1));
-                        }
-                    }               
+                    }
                 }
+                matriz[i][j].setMinasAlrededor(minas);
+                minas = 0;
+              /*  if ((arrayBotones[i][j].numeroMinasAlrededor > 0)
+                        && (arrayBotones[i][j].bomba == 0)) {
+                    arrayBotones[i][j].setText("");
+                } */
             }
         }
 
+    
     }
 
     private int minasEn(int i, int j) {
         return (matriz[i][j].getEstaMinado()) ? 1 : 0;
-    }
-
-    void imprimeMatriz() {
-
-        System.out.println("Nummero filas =" + this.NUM_FILAS);
-        System.out.println("Nummero columnas =" + this.NUM_COLUMNAS);
-        System.out.println("Nummero bombas =" + this.NUM_BOMBAS);
-        for (int i = 0; i < this.NUM_COLUMNAS; i++) {
-            for (int j = 0; j < this.NUM_FILAS; j++) {
-                //System.out.print(matriz[i][j]);
-                if (matriz[i][j].getEstaMinado() == true) {
-                    System.out.print("x");
-                } else {
-                    System.out.print(matriz[i][j].getMinasAlrededor());
-                }
-            }
-            System.out.println("");
-        }
     }
 
     private boolean getRandomBoolean() {

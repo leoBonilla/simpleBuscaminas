@@ -19,7 +19,6 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
 
     Game game;
     private int modo = Game.BASICO;
-    JToggleButton botones[][] = new JToggleButton['h']['h'];
     Casillero casilleros[][] = new Casillero['h']['h'];
     private int numClick = 0;
     Cronometro cron = new Cronometro(this);
@@ -40,8 +39,7 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
     }
     
     public void personalizarJuego(int filas, int columnas,int bombas) {
-
-  
+        
         game = new Game(filas,columnas,bombas);
         cron.pararCronometro();
         numClick =0;
@@ -53,16 +51,13 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
         jLabelBombas.setText("Minas : "+Game.NUM_BOMBAS);
         for (int i = 0; i < Game.NUM_FILAS; i++) {
             for (int j = 0; j < Game.NUM_COLUMNAS; j++) {
-           
-                JToggleButton b = new JToggleButton("");
-                b.setMinimumSize(new Dimension(43,19));
-                b.setMaximumSize(new Dimension(43,19));
-                b.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png")));
-                botones[i][j] = b;
-                MatrixButtonListener lis = new MatrixButtonListener(i,j,this);
-                b.addActionListener(lis);
-                b.addMouseListener(new MatrixButtonListener(i,j,this));
-                jPanel2.add(b); 
+                Casillero c = Game.getCasilla(i, j);
+                //c.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png")));
+                casilleros[i][j] = c;
+                MatrixButtonListener lis = new MatrixButtonListener(this);
+                c.addActionListener(lis);
+                c.addMouseListener(new MatrixButtonListener(this));
+                jPanel2.add(c); 
             }
         }
                 pack();
@@ -77,11 +72,11 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
         for (int i = 0; i < Game.NUM_FILAS; i++) {
             for (int j = 0; j < Game.NUM_COLUMNAS; j++) {
                 if (Game.getCasilla(i, j).getEstaMinado()) {
-                    botones[i][j].setText("");
-                    botones[i][j].setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon_bomb.png")));
-                    botones[i][j].setBackground(Color.red);
+                    casilleros[i][j].setText("");
+                    casilleros[i][j].setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon_bomb.png")));
+                    casilleros[i][j].setBackground(Color.red);
                 }
-                botones[i][j].setEnabled(false);
+                casilleros[i][j].setEnabled(false);
             }
         }
     }
@@ -179,7 +174,6 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage(Toolkit.getDefaultToolkit().getImage(Gui.class.getResource("/images/icono.png")));
         setMaximumSize(new java.awt.Dimension(10000, 10000));
-        setResizable(false);
 
         jPanel1.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
@@ -681,14 +675,6 @@ public class Gui extends javax.swing.JFrame implements Jugable,Cronometrable{
        cron.pararCronometro();
        perder();
     }
-
-    @Override
-    public void onAcertarMina() {
-      }
-
-    @Override
-    public void onMinaVacia() {
-     }
 
     @Override
     public void updateGui(String text) {
